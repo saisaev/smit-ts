@@ -1,0 +1,87 @@
+﻿<UserControl
+        x:Class="SmitDemo.MachineView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local= "clr-namespace:SmitDemo"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        mc:Ignorable="d" 
+        Padding="5"
+        d:DesignWidth="260" d:DesignHeight="100">
+
+    <UserControl.Resources>
+        <local:PositionToScreenConverter x:Key="positionToScreenConverter"/>
+        <local:PositionToVisibilityConverter x:Key="positionToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Canvas x:Name="topCanvas" Background="Gray">
+        <Grid x:Name="topGrid" Width="{Binding ActualWidth, ElementName=topCanvas}" Height="{Binding ActualHeight, ElementName=topCanvas}">
+            <TextBlock x:Name="machineLength" Text="{Binding MachineLength}" Visibility="Hidden"/>
+            <TextBlock x:Name="machineWidth" Text="{Binding MachineWidth}" Visibility="Hidden"/>
+            <ItemsControl ItemsSource="{Binding ProductViewModels}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="{x:Type ContentPresenter}">
+                        <Setter Property="Canvas.Top">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource positionToScreenConverter}">
+                                    <Binding ElementName="topGrid" Path="Height" />
+                                    <Binding Path="MachinePosY" />
+                                    <Binding ElementName="machineWidth" Path="Text" />
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Canvas.Left">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource positionToScreenConverter}">
+                                    <Binding ElementName="topGrid" Path="Width" />
+                                    <Binding Path="MachinePosX" />
+                                    <Binding ElementName="machineLength" Path="Text" />
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Canvas.Height">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource positionToScreenConverter}">
+                                    <Binding ElementName="topGrid" Path="Height" />
+                                    <Binding Path="ProductWidth" />
+                                    <Binding ElementName="machineWidth" Path="Text" />
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Canvas.Width">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource positionToScreenConverter}">
+                                    <Binding ElementName="topGrid" Path="Width" />
+                                    <Binding Path="ProductLength" />
+                                    <Binding ElementName="machineLength" Path="Text" />
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Canvas.Visibility">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource positionToVisibilityConverter}">
+                                    <Binding Path="MachinePosX" />
+                                    <Binding Path="MachinePosY" />
+                                    <Binding Path="ProductLength" />
+                                    <Binding Path="ProductWidth" />
+                                    <Binding ElementName="machineLength" Path="Text" />
+                                    <Binding ElementName="machineWidth" Path="Text" />
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:ProductView/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+    </Canvas>
+</UserControl>

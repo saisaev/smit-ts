@@ -1,0 +1,61 @@
+﻿<Window x:Class="SmitDemo.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SmitDemo"
+        mc:Ignorable="d"
+        Title="Program" Height="450" Width="1000">
+    
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type local:MachineViewModel}">
+            <local:MachineView />
+        </DataTemplate>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Column="0" Grid.Row="0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="140"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" 
+                       Text="Customer Product ID: "
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"/>
+
+            <TextBox Grid.Column="1" Grid.Row="0" 
+                     Text="{Binding NewCustomerProductId}"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     Width="100"/>
+            
+            <Button Grid.Column="2" Grid.Row="0" 
+                    HorizontalAlignment="Right"
+                    Width="100"
+                    Margin="20"
+                    Content="Add Product" 
+                    Command="{Binding CommandAdd}"/>
+        </Grid>
+
+        <ContentControl Grid.Column="0" Grid.Row="1" 
+                        Content="{Binding MachineViewModel}" 
+                        Margin="50" 
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"/>
+
+    </Grid>
+</Window>
